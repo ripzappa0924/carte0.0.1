@@ -1,0 +1,50 @@
+<!-- app/View/Endscopes/index.ctp-->
+
+<?php $date[0]='';?>  
+<?php for($i=0;$i<7;$i++){
+ $date[]=date("n月j日",strtotime("$i day"));
+}?>
+
+<table>
+<?php echo $this->Html->tableHeaders($date);?>
+</table>
+
+<?php
+for($i=0;$i<=7;$i++){
+	$date=date("Y-m-d",strtotime("$i day"));
+	echo '::',$date;
+	foreach($endscopes as $endscope){
+	
+			if($endscope['Endscope']['resdate']==$date){
+				for($j=0;$j<=120;$j=$j+30){
+					$time=date("H:i:s",strtotime("09:00:00 $j minute"));
+					echo $time,'---';
+					if($endscope['Endscope']['restime']==$time){
+					 echo $endscope['Endscope']['id'],'---';
+					}else{
+						echo '×';
+					}
+				}		
+			}		
+		
+	}
+}?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+<!--carte2View/patients/index-->
+<?php
+var_dump(is_dir('C:\Users\user\Dropbox\htdocs\carte2\app\Plugin\Search'));
+?>
+<h1>患者リスト</h1>
+<?php echo $this->Html->link('新規追加',array('action'=>'add'));?>
+<table>
+<tr>
+<th>患者ID </th>
+<td>名前</td>
+<td>操作</td>
+<td>性別</td>
+<td>保険証番号</td>
+<td>最終受診日</td>
+<td>初診日</td>
+<td>コメント</td>
+</tr>
+<tr>
+<?php foreach($patients as $patient):?>
+<th><?php echo $patient['Patient']['id'];?></th>
+<td><?php
+		echo $this->Html->link($patient['Patient']['name'],
+		array('action'=>'view',$patient['Patient']['id']));
+	?>
+</td>
+<td>
+	<?php
+		echo $this->Html->link('受診',
+		array('controller'=>'visitors','action'=>'visit',$patient['Patient']['id']));
+	?> 
+	<?php
+		echo $this->Html->link('診察',
+		array('controller'=>'patients','action'=>'consult',$patient['Patient']['id']));
+	?>
+	
+</td>
+	
+<td><?php echo $patient['Patient']['sex'];?></td>
+<td><?php echo $patient['Patient']['insuranceid'];?></td>
+<td><?php echo date('Y/m/d',strtotime(h($patient['Patient']['lastvisit_date'])));?></td>
+<td><?php echo date('Y/m/d',strtotime(h($patient['Patient']['created'])));?></td>
+<td><?php echo $patient['Patient']['comment'];?></td>
+
+</tr>
+<?php endforeach;?>
+</table>

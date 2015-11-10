@@ -1,0 +1,47 @@
+<?php
+class EndscopesController  extends AppController{
+public $uses = array('Visitor','Patient','Endscope');
+public function index($id=null){
+	if(!$this->request->is('post')){
+	
+	
+	$conditions1=array('resdate>='=>date("Y-m-d",strtotime("now")));
+	$conditions2=array('resdate<='=>date("Y-m-d",strtotime("7 day")));
+
+	$endscope=$this->Endscope->find('all',array(
+		'conditions'=>array('$condition1' and '$condition2'),
+		'recursive'=>2));
+			$this->set('endscopes',$endscope);
+	
+	}else{
+	$this->Endscope->id=$id;
+	$this->Endscope->create();
+	
+	$p=$this->Endscope->Visitor->find(
+    		'first',
+	    		array(
+	    		'conditions'=>array('Visitor.id'=>$id),
+		    	'fields'=>'patient_id'
+		    	)
+	    	);
+	    	$p_id=$p['Visitor']['patient_id'];
+    if($this->Endscope->save($this->request->data)){
+    
+    
+    	$this->Session->setFlash('内視鏡予約しました');
+		$this->redirect(array(
+    		'controller'=>'visitors',
+    		'action'=>'index',$p_id));
+    }else{
+    	$this->Session->setFlash('保存に失敗しました');
+		$this->redirect(array(
+    		'controller'=>'visitors',
+    		'action'=>'index',$p_id));
+    }
+    }	
+		
+
+
+}
+
+}
